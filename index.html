@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absurd Incremental v0.1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">Absurd Incremental v0.1 | IDK UPDATE</div>
+
+    <div class="menu">
+        <button class="tab-button" onclick="openTab('matter')">Matter</button>
+        <button class="tab-button" onclick="openTab('settings')">Settings</button>
+    </div>
+
+    <div id="matter" class="tab-content">
+        <button class="sub-tab-button" onclick="openSubTab('matterUpgrades')">Matter</button>
+
+        <div id="matterUpgrades" class="sub-tab-content">
+            <p style="font-size: large;">Matter: <span id="matterCurrency">0.00</span></p>
+            <button class="matterUpgrade1" onclick="matterUpgradeBuy(1)"><img src="atom.png" style="margin-right: 8px;"><p><span>Matter Stability</span> | Cost: <span id="matterUpgrade1Cost">10.00</span> | Effect: +<span id="matterUpgrade1Effect">0.00</span> To Matter Gain | Power: +<span id="matterUpgrade1Power">1.00</span></p></button>
+            <button class="matterAnn" style="margin-top: 8px;" onclick="annUp()">Annihilate Matter | Destroy All of Your Matter to Unlock New Upgrades <br> <br> At <span id="annValue">1</span> Matter Annihilate <span id="annText">Unlock New Matter Upgrade</span> | Cost: <span id="annCost">100</span> Matter</button>
+        </div>
+    </div>
+
+    <script src="break_eternity.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
