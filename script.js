@@ -26,7 +26,7 @@ let player = {
     annihilate: {
         amount: 0,
         cost: [100, 1500, 2500],
-        effect: 0,
+        effect: 1,
         upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade"],
         value: [1, 2, 3]
     }
@@ -51,23 +51,47 @@ function matterUpgradeBuy(id) {
 
 function annUp() {
     if (player.matter.gte(player.annihilate.cost[player.annihilate.amount])) {
-        player.matter = player.matter.minus(player.annihilate.cost[player.annihilate.amount]);
+        player.matter = new Decimal(0);
+        player.matterUpgrade = [upgrade1 = {cost: 10, amount: 0, effect: 0, power: 1}],
         player.annihilate.amount = new Decimal(player.annihilate.amount).plus(1);
+        player.annihilate.effect = new Decimal(player.annihilate.effect).plus(0.5); 
         document.getElementById("matterCurrency").innerHTML = player.matter.toPrecision(3);
         document.getElementById("annText").innerHTML = player.annihilate.upgrades[player.annihilate.amount];
         document.getElementById("annCost").innerHTML = player.annihilate.cost[player.annihilate.amount];
         document.getElementById("annValue").innerHTML = player.annihilate.value[player.annihilate.amount];
+        document.getElementById("matterUpgrade1Cost").innerHTML = player.matterUpgrade[0].cost.toPrecision(3);
+        document.getElementById("matterUpgrade1Effect").innerHTML = player.matterUpgrade[0].effect.toPrecision(3);
     }
 }
 
-function matterGainLoop() {
-    let e = new Decimal(0);
-    e = e.plus(1);
-    e = e.plus(player.matterUpgrade[0].effect)
-    player.matter = (player.matter).plus(e)
+function gameLoop(currentTime) {
+    if (!lastTime) {
+        lastTime = currentTime;
+    }
+    let deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+    let deltaTimeSeconds = deltaTime / 1000;
+    let e = new Decimal(1);
+    e = e.plus(player.matterUpgrade[0].effect);
+    e = e.mul(player.annihilate.effect);
+    let matterGain = e.mul(deltaTimeSeconds);
+    player.matter = player.matter.plus(matterGain);
     document.getElementById("matterCurrency").innerHTML = player.matter.toPrecision(3);
+    requestAnimationFrame(gameLoop);
 }
+
+let lastTime;
+requestAnimationFrame(gameLoop);
+
+//function matterGainLoop() {
+//    let e = new Decimal(0);
+//    e = e.plus(1);
+ //   e = e.plus(player.matterUpgrade[0].effect)
+ //   e = e.mul(player.annihilate.effect)
+  //  player.matter = (player.matter).plus(e)
+  //  document.getElementById("matterCurrency").innerHTML = player.matter.toPrecision(3);
+//}
  
-setInterval(() => {
-    matterGainLoop();
-}, player.tickspeed);
+//setInterval(() => {
+ //   matterGainLoop();
+//}, player.tickspeed);
