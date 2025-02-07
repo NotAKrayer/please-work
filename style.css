@@ -73,7 +73,7 @@ body {
     }
 }
 
-.matterUpgrade1 {
+.matterUpgrade {
     display: flex;
     align-items: center;
     justify-content: center; /* Center content inside the button */
@@ -85,6 +85,14 @@ body {
     padding: 10px 15px;
     margin: 0 auto; /* Center the button itself */
     cursor: pointer;
+}
+
+.mu2 {
+    display: none;
+}
+
+.mu2.visible {
+    display: flex;
 }
 
 .matterAnn {
