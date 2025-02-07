@@ -38,22 +38,23 @@ let player = {
 function matterUpgradeBuy(id) {
     if (player.matter.gte(player.matterUpgrade[id - 1].cost)) {
         player.matter = player.matter.minus(player.matterUpgrade[id - 1].cost);
-        if (id = 1) {
+        if (id == 1) {
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].effect).plus(player.matterUpgrade[0].power)
             player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5);
-        } else if (id = 2) {
+            player.matterUpgrade[0].amount = new Decimal(player.matterUpgrade[0].amount).plus(1);
+        } else if (id == 2) {
+            player.matterUpgrade[1].amount = new Decimal(player.matterUpgrade[1].amount).plus(1);
             player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).plus(player.matterUpgrade[1].power)
             player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4);
-            player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(1);
-        } else {
-            
+            player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(player.matterUpgrade[1].power);
+            player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].amount).mul(player.matterUpgrade[0].power)
         }
         document.getElementById("matterCurrency").innerHTML = player.matter.toPrecision(3);
-        document.getElementById("matterUpgrade1Cost").innerHTML = player.matterUpgrade[0].cost.toPrecision(3);
-        document.getElementById("matterUpgrade1Effect").innerHTML = player.matterUpgrade[0].effect.toPrecision(3);
-        document.getElementById("matterUpgrade1Power").innerHTML = player.matterUpgrade[0].power.toPrecision(3);
-        document.getElementById("matterUpgrade2Cost").innerHTML = player.matterUpgrade[1].cost.toPrecision(3);
-        document.getElementById("matterUpgrade2Effect").innerHTML = player.matterUpgrade[1].effect.toPrecision(3);
+        document.getElementById("matterUpgrade1Cost").textContent = player.matterUpgrade[0].cost.toPrecision(3);
+        document.getElementById("matterUpgrade1Effect").textContent = player.matterUpgrade[0].effect.toPrecision(3);
+        document.getElementById("matterUpgrade1Power").textContent = player.matterUpgrade[0].power.toPrecision(3);
+        document.getElementById("matterUpgrade2Cost").textContent = player.matterUpgrade[1].cost.toPrecision(3);
+        document.getElementById("matterUpgrade2Effect").textContent = player.matterUpgrade[1].effect.toPrecision(3);
     }
 }
 
