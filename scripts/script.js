@@ -130,7 +130,7 @@ function gameLoop(currentTime) {
         .plus(player.matterUpgrade[0].effect)
         .mul(player.annihilate.effect);
     
-    player.matter = player.matter.plus(e.mul(deltaTime/1000));
+    player.matter = new Decimal(player.matter).plus(e.mul(deltaTime/1000));
     
     // Optimized DOM updates
     const el = document.getElementById("matterCurrency");
