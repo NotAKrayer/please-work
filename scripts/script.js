@@ -23,15 +23,16 @@ let player = {
     matter: new Decimal(0),
     tickspeed: 1000,
     matterUpgrade:[
-        {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1},
-        {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0}
+        {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: 1},
+        {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1}
     ],
     annihilate: {
         amount: 0,
         cost: [100, 1500, 2500],
         effect: 1,
         upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade"],
-        value: [1, 2, 3]
+        value: [1, 2, 3],
+        scaleUpgrade: [1, 1, 1]
     }
 }
 
@@ -40,12 +41,12 @@ function matterUpgradeBuy(id) {
         player.matter = player.matter.minus(player.matterUpgrade[id - 1].cost);
         if (id == 1) {
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].effect).plus(player.matterUpgrade[0].power)
-            player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5);
+            player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5).mul(player.matterUpgrade[0].scale);
             player.matterUpgrade[0].amount = new Decimal(player.matterUpgrade[0].amount).plus(1);
         } else if (id == 2) {
             player.matterUpgrade[1].amount = new Decimal(player.matterUpgrade[1].amount).plus(1);
             player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).plus(player.matterUpgrade[1].power)
-            player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4);
+            player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4).mul(player.matterUpgrade[1].scale);
             player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(player.matterUpgrade[1].power);
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].amount).mul(player.matterUpgrade[0].power)
         }
@@ -56,14 +57,16 @@ function matterUpgradeBuy(id) {
         document.getElementById("matterUpgrade2Cost").textContent = player.matterUpgrade[1].cost.toPrecision(3);
         document.getElementById("matterUpgrade2Effect").textContent = player.matterUpgrade[1].effect.toPrecision(3);
     }
+
+    matterScaling();
 }
 
 function annUp() {
     if (player.matter.gte(player.annihilate.cost[player.annihilate.amount])) {
         player.matter = new Decimal(0);
         player.matterUpgrade = [
-            {cost: 10, amount: 0, effect: 0, power: 1},
-            {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0}
+            {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: 1},
+            {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1}
         ],
         player.annihilate.amount = new Decimal(player.annihilate.amount).plus(1);
         player.annihilate.effect = new Decimal(player.annihilate.effect).plus(0.5); 
@@ -84,6 +87,36 @@ function annUp() {
             document.querySelector('.mu2').classList.add('visible');
             player.matterUpgrade[1].unlocked = 1;
         }
+    }
+}
+
+let prefixes = ["High", "Extreme", "Absolute"];
+//let prefixesLevel = [20, 45, 75, 100]; stuff for scaling
+let upgradeEl = ["mu1scale", "mu2scale"]
+
+function matterScaling() {
+    const thresholds = [20, 45]; // Пороги для уровней
+    const multipliers = [1, 2, 4]; // Множители для каждого уровня (0, 1, 2)
+
+    for (let i = 0; i < 2; i++) {
+        const element = document.getElementById(upgradeEl[i]);
+        const currentAmount = player.matterUpgrade[i].amount // Предполагая, что amount - Decimal
+
+        // Определение текущего уровня
+        let level = 0;
+        if (currentAmount >= thresholds[1]) level = 2;
+        else if (currentAmount >= thresholds[0]) level = 1;
+
+        // Установка масштаба на основе уровня
+        player.matterUpgrade[i].scale = new Decimal(multipliers[level]);
+
+        // Обновление префикса
+        if (!element.dataset.baseName) {
+            element.dataset.baseName = element.textContent;
+        }
+        element.textContent = level > 0 
+            ? `${prefixes[level - 1]} ${element.dataset.baseName}` 
+            : element.dataset.baseName;
     }
 }
 
