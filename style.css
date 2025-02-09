@@ -108,3 +108,15 @@ body {
     margin: 0 auto; /* Center the button itself */
     cursor: pointer;
 }
+
+#importExportField {
+    align-items: center;
+    justify-content: center;
+    display: flexbox;
+    width: 300px;
+    height: 100px;
+    resize: none;
+    overflow: auto;
+    max-width: 90%;
+    margin: 0 auto;
+}
