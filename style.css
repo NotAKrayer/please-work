@@ -120,3 +120,22 @@ body {
     max-width: 90%;
     margin: 0 auto;
 }
+
+#resetModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #444;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border: solid black 1px;
+}
+
+#annText {
+    white-space: normal; /* Разрешает перенос текста */
+    word-wrap: break-word; /* Переносит длинные слова */
+    width: 100%; /* Занимает всю доступную ширину */
+}
