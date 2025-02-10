@@ -30,23 +30,26 @@ let player = {
         amount: 0,
         cost: [100, 1500, 2500],
         effect: 1,
-        upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade"],
+        upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
         value: [1, 2, 3],
-        scaleUpgrade: [1, 1, 1]
     }
 }
 
 function matterUpgradeBuy(id) {
     if (player.matter.gte(player.matterUpgrade[id - 1].cost)) {
         player.matter = player.matter.minus(player.matterUpgrade[id - 1].cost);
+
+        const element = document.getElementById(upgradeEl[id - 1]);
+        const hasScale = element.textContent.includes("High") || element.textContent.includes("Extreme");
+
         if (id == 1) {
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].effect).plus(player.matterUpgrade[0].power)
-            player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5).mul(player.matterUpgrade[0].scale);
+            player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5).mul(hasScale ? player.matterUpgrade[0].scale : 1);
             player.matterUpgrade[0].amount = new Decimal(player.matterUpgrade[0].amount).plus(1);
         } else if (id == 2) {
             player.matterUpgrade[1].amount = new Decimal(player.matterUpgrade[1].amount).plus(1);
             player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).plus(player.matterUpgrade[1].power)
-            player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4).mul(player.matterUpgrade[1].scale);
+            player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4).mul(hasScale ? player.matterUpgrade[1].scale : 1);
             player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(player.matterUpgrade[1].power);
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].amount).mul(player.matterUpgrade[0].power)
         }
@@ -63,10 +66,13 @@ function matterUpgradeBuy(id) {
 
 function annUp() {
     if (player.matter.gte(player.annihilate.cost[player.annihilate.amount])) {
+        if (player.annihilate.amount == 1) {
+            player.matterUpgrade[0].scale = new Decimal(player.matterUpgrade[0].scale).mul(0.8)
+        }
         player.matter = new Decimal(0);
         player.matterUpgrade = [
-            {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: 1},
-            {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1}
+            {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: player.matterUpgrade[0].scale},
+            {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: player.matterUpgrade[1].scale}
         ],
         player.annihilate.amount = new Decimal(player.annihilate.amount).plus(1);
         player.annihilate.effect = new Decimal(player.annihilate.effect).plus(0.5); 
@@ -108,7 +114,7 @@ function matterScaling() {
         else if (currentAmount >= thresholds[0]) level = 1;
 
         // Установка масштаба на основе уровня
-        player.matterUpgrade[i].scale = new Decimal(multipliers[level]);
+        player.matterUpgrade[i].scale = new Decimal(multipliers[level])
 
         // Обновление префикса
         if (!element.dataset.baseName) {

@@ -64,9 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 amount: 0,
                 cost: [new Decimal(100), new Decimal(1500), new Decimal(2500)],
                 effect: new Decimal(1),
-                upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade"],
+                upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
                 value: [1, 2, 3],
-                scaleUpgrade: [1, 1, 1]
             }
         };
     }
@@ -149,6 +148,26 @@ function handleExport() {
     alert('Save Exported! Copy from text field.');
 }
 
+
+function confirmReset() {
+    document.getElementById('resetModal').style.display = 'block';
+}
+
+function closeResetModal() {
+    document.getElementById('resetModal').style.display = 'none';
+}
+
+function handleReset() {
+    const input = document.getElementById('resetInput').value;
+    if (input === 'I understand what i do') {
+        resetGame();
+        closeResetModal();
+        openTab('matter')
+        updateUI();
+        openSubTab('matterUpgrades')
+    }
+}
+
 function resetGame() {
     localStorage.removeItem('saveData');
     player = {
@@ -162,10 +181,10 @@ function resetGame() {
             amount: 0,
             cost: [100, 1500, 2500],
             effect: 1,
-            upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade"],
+            upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
             value: [1, 2, 3],
-            scaleUpgrade: [1, 1, 1]
         }
     };
-    document.querySelector('.mu2').classList.remove('visible');
+        document.querySelector('.mu2').classList.remove('visible');
+    console.log('Игра сброшена!');
 }
