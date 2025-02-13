@@ -5,9 +5,16 @@ function updateUI() {
     document.getElementById("matterUpgrade1Power").textContent = player.matterUpgrade[0].power.toPrecision(3);
     document.getElementById("matterUpgrade2Cost").textContent = player.matterUpgrade[1].cost.toPrecision(3);
     document.getElementById("matterUpgrade2Effect").textContent = player.matterUpgrade[1].effect.toPrecision(3);
-    document.getElementById("annText").innerHTML = player.annihilate.upgrades[player.annihilate.amount];
-    document.getElementById("annCost").innerHTML = player.annihilate.cost[player.annihilate.amount];
-    document.getElementById("annValue").innerHTML = player.annihilate.value[player.annihilate.amount];
+    if (player.annihilate.amount < player.annihilate.cost.length) {
+        document.getElementById("annCost").innerHTML = player.annihilate.cost[player.annihilate.amount].toPrecision(3);
+        document.getElementById("annText").innerHTML = player.annihilate.upgrades[player.annihilate.amount]
+        document.getElementById("annValue").innerHTML = player.annihilate.value[player.annihilate.amount] || "No More Upgrades";
+    } else {
+        document.getElementById("annCost").innerHTML = player.annihilate.costAfter.toPrecision(3);
+        document.getElementById("annText").innerHTML = "No More Upgrades";
+        document.getElementById("annValue").innerHTML = player.annihilate.valueAfter
+    }
+
 }
 
 function saveGame() {
@@ -43,6 +50,8 @@ function loadGame() {
         upgrade.scale = new Decimal(upgrade.scale);
     }
     player.annihilate.effect = new Decimal(player.annihilate.effect);
+    player.annihilate.costAfter = new Decimal(player.annihilate.costAfter);
+    player.annihilate.valueAfter = new Decimal(player.annihilate.valueAfter)
 
     if (player.matterUpgrade[1].unlocked == 1) {
         document.querySelector('.mu2').classList.add('visible');
@@ -62,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             annihilate: {
                 amount: 0,
+                costAfter: new Decimal(2500),
+                valueAfter: new Decimal(3),
                 cost: [new Decimal(100), new Decimal(1500), new Decimal(2500)],
                 effect: new Decimal(1),
                 upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
@@ -124,6 +135,8 @@ function importSave(base64Save) {
             upgrade.scale = new Decimal(upgrade.scale);
         }
         player.annihilate.effect = new Decimal(player.annihilate.effect);
+        player.annihilate.costAfter = new Decimal(player.annihilate.costAfter);
+        player.annihilate.valueAfter = new Decimal(player.annihilate.valueAfter)
 
         updateUI();
         return true;
@@ -179,12 +192,14 @@ function resetGame() {
         ],
         annihilate: {
             amount: 0,
+            costAfter: new Decimal(2500),
+            valueAfter: 3,
             cost: [100, 1500, 2500],
             effect: 1,
             upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
             value: [1, 2, 3],
         }
     };
-        document.querySelector('.mu2').classList.remove('visible');
+    document.querySelector('.mu2').classList.remove('visible');
     console.log('Игра сброшена!');
 }
