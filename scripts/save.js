@@ -5,6 +5,9 @@ function updateUI() {
     document.getElementById("matterUpgrade1Power").textContent = player.matterUpgrade[0].power.toPrecision(3);
     document.getElementById("matterUpgrade2Cost").textContent = player.matterUpgrade[1].cost.toPrecision(3);
     document.getElementById("matterUpgrade2Effect").textContent = player.matterUpgrade[1].effect.toPrecision(3);
+    document.getElementById("matterUpgrade2Power").innerHTML = player.matterUpgrade[1].power.toPrecision(3);
+    document.getElementById("matterUpgrade3Cost").textContent = player.matterUpgrade[2].cost.toPrecision(3);
+    document.getElementById("matterUpgrade3Effect").textContent = player.matterUpgrade[2].effect.toPrecision(3);
     if (player.annihilate.amount < player.annihilate.cost.length) {
         document.getElementById("annCost").innerHTML = player.annihilate.cost[player.annihilate.amount].toPrecision(3);
         document.getElementById("annText").innerHTML = player.annihilate.upgrades[player.annihilate.amount]
@@ -56,6 +59,9 @@ function loadGame() {
     if (player.matterUpgrade[1].unlocked == 1) {
         document.querySelector('.mu2').classList.add('visible');
     }
+    if (player.matterUpgrade[2].unlocked == 1) {
+        document.querySelector('.mu3').classList.add('visible');
+    }
     updateUI();
 }
 
@@ -67,7 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
             tickspeed: 1000,
             matterUpgrade: [
                 { cost: new Decimal(10), amount: new Decimal(0), effect: new Decimal(0), power: new Decimal(1), unlocked: 1, scale: new Decimal(1) },
-                { cost: new Decimal(100), amount: new Decimal(0), effect: new Decimal(1), power: new Decimal(1), unlocked: 0, scale: new Decimal(1) }
+                { cost: new Decimal(100), amount: new Decimal(0), effect: new Decimal(1), power: new Decimal(1), unlocked: 0, scale: new Decimal(1) },
+                { cost: new Decimal(1000), amount: new Decimal(0), effect: new Decimal(1), power: new Decimal(1), unlocked: 0, scale: new Decimal(1) }
             ],
             annihilate: {
                 amount: 0,
@@ -77,11 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 effect: new Decimal(1),
                 upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
                 value: [1, 2, 3],
+                scaling: [1, 1, 1]
             }
         };
     }
     if (player.matterUpgrade[1].unlocked == 1) {
         document.querySelector('.mu2').classList.add('visible');
+    }
+    if (player.matterUpgrade[2].unlocked == 1) {
+        document.querySelector('.mu3').classList.add('visible');
     }
     updateUI();
     openTab('matter');
@@ -125,6 +136,10 @@ function importSave(base64Save) {
 
         if (player.matterUpgrade[1].unlocked == 1) {
             document.querySelector('.mu2').classList.add('visible');
+        }
+
+        if (player.matterUpgrade[2].unlocked == 1) {
+            document.querySelector('.mu3').classList.add('visible');
         }
         player.matter = new Decimal(player.matter);
         for (let upgrade of player.matterUpgrade) {
@@ -188,7 +203,8 @@ function resetGame() {
         tickspeed: 1000,
         matterUpgrade: [
             { cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: 1 },
-            { cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1 }
+            { cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1 },
+            { cost: 1000, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1 }
         ],
         annihilate: {
             amount: 0,
@@ -198,8 +214,10 @@ function resetGame() {
             effect: 1,
             upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling"],
             value: [1, 2, 3],
+            scaling: [1, 1, 1]
         }
     };
     document.querySelector('.mu2').classList.remove('visible');
+    document.querySelector('.mu3').classList.remove('visible');
     console.log('Игра сброшена!');
 }
