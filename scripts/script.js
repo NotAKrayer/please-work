@@ -24,17 +24,17 @@ let player = {
     tickspeed: 1000,
     matterUpgrade:[
         {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: 1},
-        {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1},
-        {cost: 1000, amount: 0, effect: 1, power: 1, unlocked: 0, scale: 1}
+        {cost: 100, amount: 0, effect: 0, power: 1, unlocked: 0, scale: 1},
+        {cost: 1000, amount: 0, effect: 0, power: 1, unlocked: 0, scale: 1}
     ],
     annihilate: {
         amount: 0,
         costAfter: 2500,
         valueAfter: 3,
-        cost: [100, 1500, 2500],
+        cost: [100, 1.00e3, 2.50e3],
         effect: 1,
         upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling",
-            "Unlock Last Matter Upgrade"
+            "Change Upgrade 2 Power from +1 to x1"
         ],
         value: [1, 2, 3],
         scaling: [1, 1, 1]
@@ -50,20 +50,28 @@ function matterUpgradeBuy(id) {
 
         if (id == 1) {
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].effect).plus(player.matterUpgrade[0].power)
-            player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5).mul(hasScale ? player.matterUpgrade[0].scale : 1);
+            player.matterUpgrade[0].cost = new Decimal(player.matterUpgrade[0].cost).mul(1.5).pow(hasScale ? player.matterUpgrade[0].scale : 1);
             player.matterUpgrade[0].amount = new Decimal(player.matterUpgrade[0].amount).plus(1);
         } else if (id == 2) {
             player.matterUpgrade[1].amount = new Decimal(player.matterUpgrade[1].amount).plus(1);
-            player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).plus(player.matterUpgrade[1].power)
-            player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4).mul(hasScale ? player.matterUpgrade[1].scale : 1);
+            if (player.annihilate.amount < 3) {
+                player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).plus(player.matterUpgrade[1].power)
+            } else {
+                player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).mul(player.matterUpgrade[1].power)
+            }
+            player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4).pow(hasScale ? player.matterUpgrade[1].scale : 1);
             player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(player.matterUpgrade[1].power);
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].amount).mul(player.matterUpgrade[0].power)
         } else if (id == 3) {
             player.matterUpgrade[2].amount = new Decimal(player.matterUpgrade[2].amount).plus(1);
             player.matterUpgrade[2].effect = new Decimal(player.matterUpgrade[2].effect).plus(player.matterUpgrade[2].power);
-            player.matterUpgrade[2].cost = new Decimal(player.matterUpgrade[2].cost).mul(8).mul(hasScale ? player.matterUpgrade[2].scale : 1);
+            player.matterUpgrade[2].cost = new Decimal(player.matterUpgrade[2].cost).mul(8).pow(hasScale ? player.matterUpgrade[2].scale : 1);
             player.matterUpgrade[1].power = new Decimal(player.matterUpgrade[1].power).plus(player.matterUpgrade[2].power);
-            player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].amount).mul(player.matterUpgrade[1].power);
+            if (player.annihilate.amount < 3) {
+                player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].amount).mul(player.matterUpgrade[1].power);
+            } else {
+                player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).mul(player.matterUpgrade[1].power);
+            }
         }
 
         document.getElementById("matterCurrency").innerHTML = player.matter.toPrecision(3);
@@ -81,14 +89,14 @@ function matterUpgradeBuy(id) {
 }
 
 let prefixes = ["High", "Extreme", "Absolute"];
-//let prefixesLevel = [20, 45, 75, 100]; stuff for scaling
+//let prefixesLevel = [10 (20), 30 (45), 75, 100]; stuff for scaling
 let upgradeEl = ["mu1scale", "mu2scale", "mu3scale"]
 
 function matterScaling() {
-    const thresholds = [20, 45]; // Пороги для уровней
+    const thresholds = [10, 30]; // Пороги для уровней
     const multipliers = [1, 2, 4]; // Множители для каждого уровня (0, 1, 2)
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
         const element = document.getElementById(upgradeEl[i]);
         const currentAmount = player.matterUpgrade[i].amount // Предполагая, что amount - Decimal
 

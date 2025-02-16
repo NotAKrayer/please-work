@@ -4,19 +4,22 @@ function annUp() {
         if (player.annihilate.amount == 1) {
             player.annihilate.scaling[0] = new Decimal(player.annihilate.scaling[0]).mul(0.8);
         }
+        if (player.annihilate.amount == 2) {
+            document.getElementById("matterUpgrade2PowerText").innerHTML = "x"
+        }
         
         player.matter = new Decimal(0);
         player.matterUpgrade = [
             {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: player.matterUpgrade[0].scale},
-            {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: player.matterUpgrade[1].scale},
-            {cost: 1000, amount: 0, effect: 1, power: 1, unlocked: 0, scale: player.matterUpgrade[2].scale}
+            {cost: 100, amount: 0, effect: 0, power: 1, unlocked: 0, scale: player.matterUpgrade[1].scale},
+            {cost: 1000, amount: 0, effect: 0, power: 1, unlocked: 0, scale: player.matterUpgrade[2].scale}
         ];
 
         player.annihilate.amount = new Decimal(player.annihilate.amount).plus(1);
         player.annihilate.effect = new Decimal(player.annihilate.effect).mul(1.5); // Увеличение эффекта
 
         // Проверяем, достигнут ли конец списка улучшений
-        let upgradeText = player.annihilate.amount < player.annihilate.upgrades.length 
+        let upgradeText = player.annihilate.amount < player.annihilate.upgrades.length
             ? player.annihilate.upgrades[player.annihilate.amount] 
             : "No More Upgrades"
 
@@ -55,8 +58,8 @@ function annUpAfter() {
         player.matter = new Decimal(0);
         player.matterUpgrade = [
             {cost: 10, amount: 0, effect: 0, power: 1, unlocked: 1, scale: player.matterUpgrade[0].scale},
-            {cost: 100, amount: 0, effect: 1, power: 1, unlocked: 0, scale: player.matterUpgrade[1].scale},
-            {cost: 1000, amount: 0, effect: 1, power: 1, unlocked: 0, scale: player.matterUpgrade[2].scale}
+            {cost: 100, amount: 0, effect: 0, power: 1, unlocked: 0, scale: player.matterUpgrade[1].scale},
+            {cost: 1000, amount: 0, effect: 0, power: 1, unlocked: 0, scale: player.matterUpgrade[2].scale}
         ];
 
         player.annihilate.amount = new Decimal(player.annihilate.amount).plus(1);
