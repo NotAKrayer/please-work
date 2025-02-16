@@ -54,11 +54,17 @@ function matterUpgradeBuy(id) {
             player.matterUpgrade[0].amount = new Decimal(player.matterUpgrade[0].amount).plus(1);
         } else if (id == 2) {
             player.matterUpgrade[1].amount = new Decimal(player.matterUpgrade[1].amount).plus(1);
+
             if (player.annihilate.amount < 3) {
                 player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).plus(player.matterUpgrade[1].power)
-            } else {
-                player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).mul(player.matterUpgrade[1].power)
+            } else if (player.annihilate.amount > 2) {
+                if (player.matterUpgrade[1].effect == 0) {
+                    player.matterUpgrade[1].effect = (new Decimal(player.matterUpgrade[1].effect).plus(1)).mul(player.matterUpgrade[1].power)
+                } else {
+                    player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).mul(player.matterUpgrade[1].power)
+                }
             }
+
             player.matterUpgrade[1].cost = new Decimal(player.matterUpgrade[1].cost).mul(4).pow(hasScale ? player.matterUpgrade[1].scale : 1);
             player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(player.matterUpgrade[1].power);
             player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].amount).mul(player.matterUpgrade[0].power)
@@ -67,10 +73,15 @@ function matterUpgradeBuy(id) {
             player.matterUpgrade[2].effect = new Decimal(player.matterUpgrade[2].effect).plus(player.matterUpgrade[2].power);
             player.matterUpgrade[2].cost = new Decimal(player.matterUpgrade[2].cost).mul(8).pow(hasScale ? player.matterUpgrade[2].scale : 1);
             player.matterUpgrade[1].power = new Decimal(player.matterUpgrade[1].power).plus(player.matterUpgrade[2].power);
+
             if (player.annihilate.amount < 3) {
                 player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].amount).mul(player.matterUpgrade[1].power);
-            } else {
-                player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).mul(player.matterUpgrade[1].power);
+            } else if (player.annihilate.amount > 2) {
+                if (player.matterUpgrade[1].effect == 0) {
+                    player.matterUpgrade[1].effect = (new Decimal(player.matterUpgrade[1].effect).plus(1)).mul(player.matterUpgrade[1].power);
+                } else {
+                    player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].effect).mul(player.matterUpgrade[1].power);
+                }
             }
         }
 

@@ -4,9 +4,6 @@ function annUp() {
         if (player.annihilate.amount == 1) {
             player.annihilate.scaling[0] = new Decimal(player.annihilate.scaling[0]).mul(0.8);
         }
-        if (player.annihilate.amount == 2) {
-            document.getElementById("matterUpgrade2PowerText").innerHTML = "x"
-        }
         
         player.matter = new Decimal(0);
         player.matterUpgrade = [
@@ -48,6 +45,10 @@ function annUp() {
         if (player.annihilate.amount > 1) {
             document.querySelector('.mu3').classList.add('visible');
             player.matterUpgrade[2].unlocked = 1;
+        }
+
+        if (player.annihilate.amount == 3) {
+            document.getElementById("matterUpgrade2PowerText").innerHTML = "x"
         }
     }
 }
