@@ -29,14 +29,14 @@ let player = {
     ],
     annihilate: {
         amount: 0,
-        costAfter: 2500,
-        valueAfter: 3,
-        cost: [100, 1.00e3, 2.50e3],
+        costAfter: 6.25e4,
+        valueAfter: 5,
+        cost: [100, 1.50e3, 2.50e3, 1.25e4, 6.25e4],
         effect: 1,
         upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling",
-            "Change Upgrade 2 Power from +1 to x1"
+            "Change Upgrade 2 Power from +1 to x1", "20% Weaker Upgrade 2 Scaling, 10% Weaker Upgrade 1 Scaling", "SIGMA"
         ],
-        value: [1, 2, 3],
+        value: [1, 2, 3, 4, 5],
         scaling: [1, 1, 1]
     }
 }
@@ -73,6 +73,8 @@ function matterUpgradeBuy(id) {
             player.matterUpgrade[2].effect = new Decimal(player.matterUpgrade[2].effect).plus(player.matterUpgrade[2].power);
             player.matterUpgrade[2].cost = new Decimal(player.matterUpgrade[2].cost).mul(8).pow(hasScale ? player.matterUpgrade[2].scale : 1);
             player.matterUpgrade[1].power = new Decimal(player.matterUpgrade[1].power).plus(player.matterUpgrade[2].power);
+            player.matterUpgrade[0].power = new Decimal(player.matterUpgrade[0].power).plus(player.matterUpgrade[1].power);
+            player.matterUpgrade[0].effect = new Decimal(player.matterUpgrade[0].amount).mul(player.matterUpgrade[0].power)
 
             if (player.annihilate.amount < 3) {
                 player.matterUpgrade[1].effect = new Decimal(player.matterUpgrade[1].amount).mul(player.matterUpgrade[1].power);

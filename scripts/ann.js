@@ -71,7 +71,7 @@ function annUpAfter() {
 
         document.getElementById("annText").innerHTML = upgradeText;
 
-        player.annihilate.costAfter = new Decimal(player.annihilate.costAfter).mul(2);
+        player.annihilate.costAfter = new Decimal(player.annihilate.costAfter).mul(5);
         player.annihilate.valueAfter = new Decimal(player.annihilate.valueAfter).add(1);
 
         document.getElementById("annCost").innerHTML = player.annihilate.costAfter.toPrecision(3)

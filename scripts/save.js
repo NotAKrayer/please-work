@@ -82,14 +82,14 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
             annihilate: {
                 amount: 0,
-                costAfter: new Decimal(2500),
-                valueAfter: new Decimal(3),
-                cost: [new Decimal(100), new Decimal(1500), new Decimal(2500)],
+                costAfter: new Decimal(6.25e4),
+                valueAfter: new Decimal(5),
+                cost: [new Decimal(100), new Decimal(1.50e3), new Decimal(2.50e3), new Decimal(1.25e4), new Decimal(6.25e4)],
                 effect: new Decimal(1),
                 upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling",
-                    "Change Upgrade 2 Power from +1 to x1"
+                    "Change Upgrade 2 Power from +1 to x1", "20% Weaker Upgrade 2 Scaling, 10% Weaker Upgrade 1 Scaling", "SIGMA"
                 ],
-                value: [1, 2, 3],
+                value: [1, 2, 3, 4, 5],
                 scaling: [1, 1, 1]
             }
         };
@@ -222,14 +222,14 @@ function resetGame() {
         ],
         annihilate: {
             amount: 0,
-            costAfter: new Decimal(2500),
-            valueAfter: 3,
-            cost: [100, 1500, 2500],
+            costAfter: new Decimal(6.25e4),
+            valueAfter: 5,
+            cost: [100, 1.50e3, 2.50e3, 1.25e4, 6.25e4],
             effect: 1,
             upgrades: ["Unlock New Matter Upgrade", "Unlock Another Matter Upgrade, 20% Weaker Upgrade 1 Scaling",
-                "Change Upgrade 2 Power from +1 to x1"
+                "Change Upgrade 2 Power from +1 to x1", "20% Weaker Upgrade 2 Scaling, 10% Weaker Upgrade 1 Scaling", "SIGMA"
             ],
-            value: [1, 2, 3],
+            value: [1, 2, 3, 4, 5],
             scaling: [1, 1, 1]
         }
     };
