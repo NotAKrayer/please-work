@@ -20,6 +20,8 @@ function updateUI() {
 
 }
 
+//hello from visual studio!!!
+
 function saveGame() {
     const saveData = JSON.stringify(player, (key, value) => {
         if (value instanceof Decimal) {
